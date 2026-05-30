@@ -1,0 +1,27 @@
+devops:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+          - "Dockerfile"
+
+frontend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "flask_app/templates/**"
+          - "flask_app/static/**"
+
+machine-learning:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/models/**"
+
+feature-engineering:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/features/**"
+
+data-engineering:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/data/**"
+          - "notebooks/**"
