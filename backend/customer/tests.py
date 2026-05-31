@@ -1,3 +1,7 @@
+from django.apps import apps
 from django.test import TestCase
 
-# Create your tests here.
+
+class CustomerAppTests(TestCase):
+	def test_customer_app_is_installed(self):
+		self.assertTrue(apps.is_installed('customer'))
