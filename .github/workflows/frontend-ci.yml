@@ -38,7 +38,7 @@ jobs:
 
       - name: Run Frontend Tests
         working-directory: frontend
-        run: pnpm test -- --watch=false
+        run: CI=true pnpm test
 
       - name: Build Frontend
         working-directory: frontend
