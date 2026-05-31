@@ -7,21 +7,27 @@ devops:
 frontend:
   - changed-files:
       - any-glob-to-any-file:
-          - "flask_app/templates/**"
-          - "flask_app/static/**"
+          - "frontend/**"
+
+backend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "backend/**"
 
 machine-learning:
   - changed-files:
       - any-glob-to-any-file:
-          - "src/models/**"
+          - "ml/**"
 
 feature-engineering:
   - changed-files:
       - any-glob-to-any-file:
-          - "src/features/**"
+          - "ml/notebooks/**"
+          - "ml/utils.py"
 
 data-engineering:
   - changed-files:
       - any-glob-to-any-file:
-          - "src/data/**"
+          - "ml/data/**"
+          - "data/**"
           - "notebooks/**"

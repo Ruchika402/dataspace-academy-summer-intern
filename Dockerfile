@@ -10,7 +10,7 @@ RUN groupadd -r appgroup && \
 
 WORKDIR /app
 
-# Install dependencies first (better layer caching)
+# Install dependencies first for better layer caching
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir --upgrade pip && \
@@ -25,7 +25,7 @@ RUN chown -R appuser:appgroup /app
 # Switch to non-root user
 USER appuser
 
-# Flask port
-EXPOSE 5000
+# Django development server port
+EXPOSE 8000
 
-CMD ["python", "flask_app/app.py"]
+CMD ["python", "backend/manage.py", "runserver", "0.0.0.0:8000"]
