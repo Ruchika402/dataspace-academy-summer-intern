@@ -2,3 +2,8 @@ asgiref==3.11.1
 Django==5.2.14
 django-cors-headers==4.9.0
 djangorestframework==3.17.1
+joblib==1.5.1
+numpy==2.2.6
+pandas==2.2.3
+scikit-learn==1.6.1
+xgboost==2.1.4
