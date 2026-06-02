@@ -20,7 +20,10 @@ Thumbs.db
 .vscode/
 .idea/
 
-.pnpm-store/
+/.pnpm-store/
+/node_modules/
+/frontend/node_modules/
+/frontend/.pnpm-store/
 
 db.sqlite3
 __init__.py
