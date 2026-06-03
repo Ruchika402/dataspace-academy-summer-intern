@@ -8,4 +8,5 @@ urlpatterns = [
     path('customers/recent/', views.RecentCustomersView.as_view(), name='recent-customers'),
     path('login/', views.CustomObtainAuthToken.as_view(), name='api-login'),
     path('logout/', views.LogoutView.as_view(), name='api-logout'),
+    path('register/', views.RegisterView.as_view(), name='api-register'),
 ]

@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
 
 from .serializers import CustomerInputSerializer
 
@@ -120,8 +121,8 @@ class DashboardStatsView(APIView):
             df = load_dashboard_dataframe()
             stats = {
                 "total_customers": len(df),
-                "active_customers": int(len(df[df["Recency"] < 60])),
-                "repeat_customers": int(len(df[df["NumStorePurchases"] > 2])),
+                "active_customers": len(df[df["Recency"] < 60]),
+                "repeat_customers": len(df[df["NumStorePurchases"] > 2]),
                 "avg_age": round(df["Age"].mean(), 1),
                 "avg_income": round(df["Income"].mean(), 0),
                 "model_accuracy": 97.4,
@@ -196,7 +197,7 @@ class RecentCustomersView(APIView):
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
-    permission_classes = [AllowAny]
+    permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -219,3 +220,46 @@ class LogoutView(APIView):
             return Response({"message": "Successfully logged out."}, status=status.HTTP_200_OK)
         except Exception:
             return Response({"error": "Failed to logout."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response(
+                {"error": "Username and password are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if User.objects.filter(username=username).exists():
+            return Response(
+                {"error": "Username is already taken."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.create_user(
+                username=username,
+                password=password
+            )
+
+            token, created = Token.objects.get_or_create(user=user)
+            return Response(
+                {
+                    "message": "User registered successfully.",
+                    "token": token.key,
+                    "user_id": user.pk,
+                    "username": user.username,
+                    "is_staff": user.is_staff
+                },
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
