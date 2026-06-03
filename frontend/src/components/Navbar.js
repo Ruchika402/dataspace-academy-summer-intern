@@ -5,15 +5,14 @@ function Navbar() {
   const location = useLocation();
 
   return (
-    <nav
-      className="navbar navbar-expand-lg navbar-light app-navbar"
-    >
-      <div className="container">
-        {/* Logo / Brand */}
-        <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
-          <div className="brand-badge">
-            IQ
-          </div>
+  <nav className="navbar navbar-expand-lg navbar-light app-navbar">
+  <div className="container">
+    <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
+      {/* Logo content goes here */}
+    </Link>
+    {/* Rest of your navbar content */}
+      </div>
+    </nav>
           <span className="brand-title">
             CustomerIQ
           </span>

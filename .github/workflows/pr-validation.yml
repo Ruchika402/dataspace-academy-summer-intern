@@ -75,6 +75,9 @@ jobs:
     runs-on: ubuntu-latest
     if: always()
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Add Passed Label
         if: ${{ needs.validate.result == 'success' }}
         env:
