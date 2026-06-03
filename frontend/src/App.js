@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import PredictionForm from "./pages/PredictionForm";
 import Result from "./pages/Result";
@@ -30,6 +32,8 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
 

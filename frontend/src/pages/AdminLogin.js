@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.css";
 
-function Login() {
+function AdminLogin() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,12 +35,14 @@ function Login() {
       if (response.ok) {
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("username", data.username);
+        // Save flag to indicate it's an admin session if they logged in via admin portal
+        localStorage.setItem("isAdmin", "true");
         navigate("/dashboard");
       } else {
-        setError(data.non_field_errors ? data.non_field_errors[0] : "Invalid username or password.");
+        setError(data.non_field_errors ? data.non_field_errors[0] : "Invalid admin credentials.");
       }
     } catch (err) {
-      setError("Unable to connect to the authentication server. Please try again.");
+      setError("Unable to connect to the administration server. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -50,8 +52,8 @@ function Login() {
     <div className={`landing-wrapper ${theme}-theme`}>
       {/* Background Graphic Effects */}
       <div className="bg-grid-dots"></div>
-      <div className="glowing-blob-left"></div>
-      <div className="glowing-blob-right"></div>
+      <div className="glowing-blob-left" style={{ filter: "hue-rotate(60deg)" }}></div>
+      <div className="glowing-blob-right" style={{ filter: "hue-rotate(60deg)" }}></div>
       <div className="accent-circle-float"></div>
 
       {/* Header */}
@@ -67,7 +69,7 @@ function Login() {
                 <circle cx="23" cy="7" r="2" fill="#a78bfa"/>
               </svg>
             </div>
-            <span className="brand-text">CustomerIQ</span>
+            <span className="brand-text">CustomerIQ <span style={{ fontSize: "0.65em", opacity: 0.8, verticalAlign: "super", fontWeight: "500" }}>Admin</span></span>
           </Link>
           <div className="header-actions">
             <button className="theme-toggle-btn" title="Toggle Theme" aria-label="Toggle Theme" onClick={toggleTheme}>
@@ -108,10 +110,10 @@ function Login() {
         }}>
           <div style={{ textAlign: "center", marginBottom: "32px" }}>
             <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "var(--text-main)", marginBottom: "8px", letterSpacing: "-0.02em" }}>
-              Sign In
+              Admin Panel Sign In
             </h2>
             <p style={{ color: "var(--text-sub)", fontSize: "0.925rem" }}>
-              Enter your credentials to access the CustomerIQ dashboard
+              Enter your credentials to access the CustomerIQ admin panel
             </p>
           </div>
 
@@ -133,14 +135,14 @@ function Login() {
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div>
               <label style={{ display: "block", fontSize: "0.85rem", fontWeight: "600", color: "var(--text-main)", marginBottom: "6px" }}>
-                Username
+                Admin Username
               </label>
               <input
                 type="text"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
+                placeholder="Enter admin username"
                 style={{
                   width: "100%",
                   padding: "12px 16px",
@@ -192,7 +194,7 @@ function Login() {
                 gap: "8px"
               }}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Signing in as Admin..." : "Sign In as Admin"}
               {!loading && (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -200,19 +202,11 @@ function Login() {
                 </svg>
               )}
             </button>
-            <div style={{ textAlign: "center", marginTop: "16px", fontSize: "0.875rem", color: "var(--text-sub)", display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div>
-                Don't have an account?{" "}
-                <Link to="/register" style={{ color: "var(--accent-color)", fontWeight: "600", textDecoration: "none" }}>
-                  Sign Up
-                </Link>
-              </div>
-              <div style={{ fontSize: "0.83rem" }}>
-                Are you an admin?{" "}
-                <Link to="/admin-login" style={{ color: "var(--text-sub)", fontWeight: "600", textDecoration: "underline" }}>
-                  Admin Sign In
-                </Link>
-              </div>
+            <div style={{ textAlign: "center", marginTop: "16px", fontSize: "0.875rem", color: "var(--text-sub)" }}>
+              Standard user?{" "}
+              <Link to="/login" style={{ color: "var(--accent-color)", fontWeight: "600", textDecoration: "none" }}>
+                User Sign In
+              </Link>
             </div>
           </form>
         </div>
@@ -234,4 +228,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AdminLogin;

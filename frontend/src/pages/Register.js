@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.css";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
 
   const toggleTheme = () => {
@@ -16,28 +17,36 @@ function Login() {
     localStorage.setItem("theme", newTheme);
   };
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess(false);
 
     try {
-      const response = await fetch("/api/login/", {
+      const response = await fetch("/api/register/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          username,
+          password,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        setSuccess(true);
+        // Automatically log the user in after successful registration
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("username", data.username);
-        navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1500);
       } else {
-        setError(data.non_field_errors ? data.non_field_errors[0] : "Invalid username or password.");
+        setError(data.error || "Failed to register. Please check your inputs.");
       }
     } catch (err) {
       setError("Unable to connect to the authentication server. Please try again.");
@@ -106,12 +115,12 @@ function Login() {
           maxWidth: "420px",
           boxShadow: theme === "light" ? "0 20px 40px -15px rgba(0,0,0,0.05)" : "0 20px 40px -15px rgba(0,0,0,0.3)"
         }}>
-          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div style={{ textAlign: "center", marginBottom: "28px" }}>
             <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "var(--text-main)", marginBottom: "8px", letterSpacing: "-0.02em" }}>
-              Sign In
+              Create Account
             </h2>
             <p style={{ color: "var(--text-sub)", fontSize: "0.925rem" }}>
-              Enter your credentials to access the CustomerIQ dashboard
+              Sign up to start segmenting and managing customers
             </p>
           </div>
 
@@ -123,14 +132,29 @@ function Login() {
               borderRadius: "8px",
               padding: "12px",
               fontSize: "0.88rem",
-              marginBottom: "24px",
+              marginBottom: "20px",
               lineHeight: "1.5"
             }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          {success && (
+            <div style={{
+              backgroundColor: "rgba(16, 185, 129, 0.1)",
+              border: "1px solid rgba(16, 185, 129, 0.2)",
+              color: "#10b981",
+              borderRadius: "8px",
+              padding: "12px",
+              fontSize: "0.88rem",
+              marginBottom: "20px",
+              lineHeight: "1.5"
+            }}>
+              Registration successful! Redirecting to dashboard...
+            </div>
+          )}
+
+          <form onSubmit={handleRegister} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <div>
               <label style={{ display: "block", fontSize: "0.85rem", fontWeight: "600", color: "var(--text-main)", marginBottom: "6px" }}>
                 Username
@@ -140,10 +164,10 @@ function Login() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
+                placeholder="Choose a username"
                 style={{
                   width: "100%",
-                  padding: "12px 16px",
+                  padding: "11px 16px",
                   borderRadius: "10px",
                   border: theme === "light" ? "1px solid #cbd5e1" : "1px solid #475569",
                   backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
@@ -163,10 +187,10 @@ function Login() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder="Create a secure password"
                 style={{
                   width: "100%",
-                  padding: "12px 16px",
+                  padding: "11px 16px",
                   borderRadius: "10px",
                   border: theme === "light" ? "1px solid #cbd5e1" : "1px solid #475569",
                   backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
@@ -179,7 +203,7 @@ function Login() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || success}
               className="cta-primary"
               style={{
                 width: "100%",
@@ -192,7 +216,7 @@ function Login() {
                 gap: "8px"
               }}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Registering..." : "Register"}
               {!loading && (
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -200,19 +224,12 @@ function Login() {
                 </svg>
               )}
             </button>
-            <div style={{ textAlign: "center", marginTop: "16px", fontSize: "0.875rem", color: "var(--text-sub)", display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div>
-                Don't have an account?{" "}
-                <Link to="/register" style={{ color: "var(--accent-color)", fontWeight: "600", textDecoration: "none" }}>
-                  Sign Up
-                </Link>
-              </div>
-              <div style={{ fontSize: "0.83rem" }}>
-                Are you an admin?{" "}
-                <Link to="/admin-login" style={{ color: "var(--text-sub)", fontWeight: "600", textDecoration: "underline" }}>
-                  Admin Sign In
-                </Link>
-              </div>
+
+            <div style={{ textAlign: "center", marginTop: "16px", fontSize: "0.875rem", color: "var(--text-sub)" }}>
+              Already have an account?{" "}
+              <Link to="/login" style={{ color: "var(--accent-color)", fontWeight: "600", textDecoration: "none" }}>
+                Sign In
+              </Link>
             </div>
           </form>
         </div>
@@ -234,4 +251,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
