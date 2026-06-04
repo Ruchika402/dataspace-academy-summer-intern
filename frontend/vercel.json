@@ -17,16 +17,16 @@
       "destination": "https://threathunter-api.onrender.com/api/register/"
     },
     {
-      "source": "/api/:path*",
-      "destination": "https://threathunter-api.onrender.com/api/:path*"
+      "source": "/api/(.*)",
+      "destination": "https://threathunter-api.onrender.com/api/$1"
     },
     {
-      "source": "/admin/:path*",
-      "destination": "https://threathunter-api.onrender.com/admin/:path*"
+      "source": "/admin/(.*)",
+      "destination": "https://threathunter-api.onrender.com/admin/$1"
     },
     {
-      "source": "/static/admin/:path*",
-      "destination": "https://threathunter-api.onrender.com/static/admin/:path*"
+      "source": "/static/admin/(.*)",
+      "destination": "https://threathunter-api.onrender.com/static/admin/$1"
     }
   ]
 }

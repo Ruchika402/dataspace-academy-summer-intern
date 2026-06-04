@@ -15,17 +15,7 @@ function Sidebar() {
   ].filter(item => !item.adminOnly || isStaff);
 
   return (
-    <div
-      style={{
-        width: "210px",
-        minHeight: "100vh",
-        backgroundColor: "#ffffff",
-        borderRight: "1px solid #e9ecef",
-        display: "flex",
-        flexDirection: "column",
-        flexShrink: 0,
-      }}
-    >
+    <div className="app-sidebar">
       {/* Logo */}
       <div style={{ padding: "20px 16px", borderBottom: "1px solid #e9ecef" }}>
         <div

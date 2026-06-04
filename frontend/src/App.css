@@ -133,3 +133,65 @@ body {
   background: #faeeda;
   border: 1px solid #fac775;
 }
+
+/* Sidebar default styling */
+.app-sidebar {
+  width: 210px;
+  min-height: 100vh;
+  background-color: #ffffff;
+  border-right: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100% !important;
+    min-height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .app-sidebar nav {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    padding: 8px !important;
+    gap: 6px !important;
+  }
+
+  .app-sidebar nav > div {
+    margin-bottom: 0 !important;
+    flex: 1;
+    min-width: 80px;
+    justify-content: center;
+    padding: 6px 8px !important;
+    font-size: 0.8rem !important;
+    border-radius: 6px !important;
+  }
+
+  /* Hide logo and user profile to save space on mobile navigation */
+  .app-sidebar > div:first-child,
+  .app-sidebar > div:nth-last-child(2) {
+    display: none !important;
+  }
+
+  /* Arrange logout actions in a row */
+  .app-sidebar > div:last-child {
+    flex-direction: row !important;
+    padding: 8px !important;
+    border-top: none !important;
+  }
+
+  .app-sidebar > div:last-child button {
+    padding: 6px !important;
+    font-size: 0.75rem !important;
+    margin-bottom: 0 !important;
+  }
+}
