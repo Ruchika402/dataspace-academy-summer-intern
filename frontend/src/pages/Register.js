@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.css";
 
@@ -10,6 +10,37 @@ function Register() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileRef = useRef(null);
+
+  useEffect(() => {
+    const renderTurnstile = () => {
+      if (window.turnstile && turnstileRef.current) {
+        try {
+          window.turnstile.render(turnstileRef.current, {
+            sitekey: "0x4AAAAAADeslQkMm474LNBj",
+            callback: (token) => {
+              setTurnstileToken(token);
+            },
+          });
+        } catch (e) {
+          console.error("Turnstile render error:", e);
+        }
+      }
+    };
+
+    if (window.turnstile) {
+      renderTurnstile();
+    } else {
+      const interval = setInterval(() => {
+        if (window.turnstile) {
+          renderTurnstile();
+          clearInterval(interval);
+        }
+      }, 500);
+      return () => clearInterval(interval);
+    }
+  }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -19,6 +50,10 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      setError("Please complete the security check.");
+      return;
+    }
     setLoading(true);
     setError("");
     setSuccess(false);
@@ -32,6 +67,7 @@ function Register() {
         body: JSON.stringify({
           username,
           password,
+          turnstile_token: turnstileToken,
         }),
       });
 
@@ -205,6 +241,17 @@ function Register() {
                 }}
               />
             </div>
+
+            {/* Turnstile Widget */}
+            <div 
+              ref={turnstileRef} 
+              style={{ 
+                display: "flex", 
+                justifyContent: "center", 
+                marginTop: "10px", 
+                marginBottom: "10px" 
+              }}
+            ></div>
 
             <button
               type="submit"

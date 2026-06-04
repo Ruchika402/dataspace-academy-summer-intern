@@ -1,7 +1,33 @@
+import os
+import json
+import urllib.request
+import urllib.parse
 import logging
 from pathlib import Path
 
 import pandas as pd
+
+def verify_turnstile_token(token: str) -> bool:
+    """Verify Turnstile token with Cloudflare siteverify API."""
+    if not token:
+        return False
+    # Use test secret key as fallback for development
+    secret_key = os.environ.get("TURNSTILE_SECRET_KEY") or "1x00000000000000000000000000000000u"
+    
+    url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+    data = urllib.parse.urlencode({
+        "secret": secret_key,
+        "response": token
+    }).encode("utf-8")
+    
+    try:
+        req = urllib.request.Request(url, data=data, method="POST")
+        with urllib.request.urlopen(req, timeout=5) as response:
+            result = json.loads(response.read().decode("utf-8"))
+            return result.get("success", False)
+    except Exception as e:
+        logger.error("Turnstile verification failed: %s", e)
+        return False
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -224,6 +250,12 @@ class CustomObtainAuthToken(ObtainAuthToken):
     permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):
+        turnstile_token = request.data.get("turnstile_token")
+        if not verify_turnstile_token(turnstile_token):
+            return Response(
+                {"non_field_errors": ["Security check failed. Please refresh and try again."]},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -251,6 +283,12 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        turnstile_token = request.data.get("turnstile_token")
+        if not verify_turnstile_token(turnstile_token):
+            return Response(
+                {"error": "Security check failed. Please try again."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         username = request.data.get("username")
         password = request.data.get("password")
 
