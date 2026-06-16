@@ -24,3 +24,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Hide Webpack Dev Server and React Error Overlay in Development */
+iframe#webpack-dev-server-client-overlay,
+#webpack-dev-server-client-overlay,
+react-portal {
+  display: none !important;
+}

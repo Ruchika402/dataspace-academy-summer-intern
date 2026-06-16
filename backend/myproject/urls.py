@@ -49,6 +49,13 @@ def root_view(request):
         "message": "Welcome to CustomerIQ - Transforming customer data into actionable business insights."
     })
 
+def custom_404_view(request, exception=None):
+    return JsonResponse({
+        "error": "Not Found",
+        "message": "The requested API endpoint does not exist. Please refer to the root URL (/) for API documentation.",
+        "status_code": 404
+    }, status=404)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('customer.urls')),
@@ -56,3 +63,5 @@ urlpatterns = [
     path('health/', health_check),
     path('', root_view, name='root-info'),
 ]
+
+handler404 = 'myproject.urls.custom_404_view'
