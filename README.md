@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  An AI/ML-powered customer segmentation and categorization platform developed during the DataSpace Internship.
+  An AI/ML-powered customer segmentation and categorization platform developed during the DataSpace Academy Internship.
 </p>
 
 <p align="center">
@@ -39,44 +39,35 @@
 ## 🚀 Local Development Setup
 
 ### Prerequisites
-* Python 3.11+
-* Node.js (v24+ recommended)
+* Python 3.10+
+* Node.js (v22+ or newer)
 * `pnpm` package manager
 
-### 1. Backend Setup
-1. Navigate to the project root.
-2. Initialize and activate a virtual environment:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-3. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Run migrations and database setup:
-   ```bash
-   python backend/manage.py migrate
-   ```
-5. Start the development server (runs on port `8000`):
-   ```bash
-   DJANGO_DEBUG=True python backend/manage.py runserver
-   ```
+### Quick Start (Start both Frontend & Backend)
+You can launch both the frontend and backend servers concurrently with a single command from the project root:
+```bash
+pnpm install
+pnpm start
+```
+*(Note: The backend bootstrapper will automatically check your Python environment, create a `.venv` if one is missing, install the required Python packages from `requirements.txt`, and boot the Django backend alongside the React frontend.)*
 
-### 2. Frontend Setup
-1. Navigate to the `frontend/` directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-3. Run the development server:
-   ```bash
-   pnpm start
-   ```
-   *The frontend will open automatically at [http://localhost:3000](http://localhost:3000).*
+### Running Servers Separately
+If you prefer to run the servers in separate terminals:
+* **Start Django Backend:**
+  ```bash
+  pnpm start:backend
+  ```
+* **Start React Frontend:**
+  ```bash
+  pnpm start:frontend
+  ```
+
+### Database Migrations
+If you need to run database migrations:
+```bash
+# Activate the virtual environment (.venv) and run migrations:
+python backend/manage.py migrate
+```
 
 ---
 
