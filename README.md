@@ -33,8 +33,8 @@
 - **Team Name**: Threat Hunters
 - **College**: B.P.Poddar Institute of Management & Technology
 - **Department**: BCA
-- **Internship Program**: DataSpace Academy Summer Internship
-- **Organization**: DataSpace Academy
+- **Internship Program**: AI & ML Summer Internship
+- **Organization**: DataSpace Academy, Sector v, Kolkata
 
 ---
 
@@ -52,7 +52,7 @@
 
 - **Sadikul Sekh** – Model Training (Random Forest, XGBoost), Hyperparameter Tuning
 - **Payel Hazra** – Frontend Development (React Dashboard, UI/UX)
-- **Rupsa Haldar** – In Charge of making PPT and files
+- **Rupsa Haldar** – Documentation & Presentation
 
 ---
 
