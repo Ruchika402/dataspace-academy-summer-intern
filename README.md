@@ -50,9 +50,9 @@
 
 ## 🤝 Contributors
 
-- **[Sadikul Sekh]** – Model Training (Random Forest, XGBoost), Hyperparameter Tuning
-- **[Payel Hazra]** – Frontend Development (React Dashboard, UI/UX)
-- **[Rupsa Haldar]** – In Charge of making PPT and files
+- **Sadikul Sekh** – Model Training (Random Forest, XGBoost), Hyperparameter Tuning
+- **Payel Hazra** – Frontend Development (React Dashboard, UI/UX)
+- **Rupsa Haldar** – In Charge of making PPT and files
 
 ---
 
