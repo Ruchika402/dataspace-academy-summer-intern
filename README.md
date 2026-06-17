@@ -30,11 +30,11 @@
 
 ## 👥 Team Information
 
-| **Team Name** | Threat Hunters |
-| **College** | B.P.Poddar Institute of Management & Technology |
-| **Department** | BCA |
-| **Internship Program** | DataSpace Academy Summer Internship |
-| **Organization** | DataSpace Academy |
+- **Team Name**: Threat Hunters
+- **College**: B.P.Poddar Institute of Management & Technology
+- **Department**: BCA
+- **Internship Program**: DataSpace Academy Summer Internship
+- **Organization**: DataSpace Academy
 
 ---
 
